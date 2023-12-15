@@ -17,14 +17,14 @@ class MainMenu:
 
     def start(self):
         while(1):
-            options_name = ["start_test", "setup_count", "setup_interval", "exit_program"]
-            options_function = [self.start_test, self.setup_count, self.setup_interval, self.exit_program]
+            options_name = ["start_test", "setup_count", "setup_interval", "exit_program", "how_to_export_excel"]
+            options_function = [self.start_test, self.setup_count, self.setup_interval, self.exit_program, self.how_to]
 
             os.system('clear')
-            print(f"  [bold green]Current Config[/bold green]")
-            print(f"[bold cyan]Count[/bold cyan]          : [bold magenta]{self.count}[/bold magenta]")
-            print(f"[bold cyan]Interval (sec)[/bold cyan] : [bold magenta]{self.interval}[/bold magenta]")
-            print()
+            print(f"""  [bold green]Current Config[/bold green]
+[bold cyan]Count[/bold cyan]          : [bold magenta]{self.count}[/bold magenta]
+[bold cyan]Interval (sec)[/bold cyan] : [bold magenta]{self.interval}[/bold magenta]
+            """)
 
             self.console.print("[bold]Menu options_name:[/bold]")
             for i, option in enumerate(options_name):
@@ -66,6 +66,7 @@ class MainMenu:
 
     def start_test(self):
         os.system('clear')
+        i2c.start_test(self.count, self.interval)
 
     def setup_count(self):
         os.system('clear')
@@ -80,6 +81,22 @@ class MainMenu:
         self.interval = self.get_user_choice(is_having_boundary=False)
         self.save_config("interval", self.interval)
         self.start()
+
+    def how_to(self):
+        os.system('clear')
+        print('[green bold]Command[/green bold] : scp <remote_username>@<IPorHost>:<PathToFile> <LocalFileLocation>')
+
+        print('''
+              enter [italic green]ifconfig[/italic green] to check rpi ip (wlan0 inet)
+              ''')
+
+        print('[green cyan]sensirion eg.[/green cyan] scp trinity@192.168.0.244:/home/trinity/senlog/excel/ss_log.xlsx C:\\Users')
+        print('[green yellow]panasonic eg.[/green yellow] scp trinity@192.168.0.244:/home/trinity/senlog/excel/pana_log.xlsx C:\\Users')
+
+        print('''
+              Press [italic bold green]Enter[/italic bold green] to go to main menu
+              ''')
+        input('')
 
     def exit_program(self):
         os.system('clear')
