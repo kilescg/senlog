@@ -56,15 +56,12 @@ def create_excel(file_path, data_dict, total_round, chart_config):
         chart.title = f"{chart_config['title']} {chart_num}"
         chart.x_axis.title = chart_config['x_axis']
         chart.y_axis.title = chart_config['y_axis']
-        # chart.title = f"Panasonic SN-GCJA5 Test Sample {chart_num}"
-        # chart.x_axis.title = "Test number"
-        # chart.y_axis.title = "PM 2.5 (µg/m³)"
         chart.style = 10
 
         for data_num in range(data_point):
             series = Reference(
                 worksheet,
-                min_col=(chart_num * 10) + data_num + 3,
+                min_col=(chart_num * 10) + data_num + 2,
                 min_row=1,
                 max_row=total_round + 1,
             )
@@ -74,3 +71,25 @@ def create_excel(file_path, data_dict, total_round, chart_config):
         worksheet.add_chart(chart, chart_location)
         workbook.save(file_path)
     writer.close()
+
+def format_data_to_excel(data_dict, timestamp):
+    # Get all model id
+    model_ids = []
+    for address in data_dict.keys():
+        model_id = data_dict[address]["model_id"]
+        if model_id not in model_ids:
+            model_ids.append(model_id)
+    # Create dict from each model id
+    
+    sensors_group = {}
+    for model_id in model_ids:
+        sensors_group[model_id] = {}
+
+    for address in data_dict.keys():
+        model_id = data_dict[address]["model_id"]
+        sensors_group[model_id][address] = data_dict[address]['data']
+        if 'timestamp' not in sensors_group[model_id]:
+            sensors_group[model_id]['timestamp'] = timestamp
+        sensors_group[model_id][address] = data_dict[address]['data']
+
+    return sensors_group

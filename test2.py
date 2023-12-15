@@ -35,3 +35,10 @@ if __name__ == '__main__':
 
     create_excel(data_dict)
     upload_to_dropbox(ACCESS_TOKEN, EXCEL_FILE_PATH, DROPBOX_PATH)
+
+    {
+        '1',[1,2,3],
+        '2',[4,5,6],
+        '3',[7,8,9],
+        'datetime' : ['1', '2','3']
+    }

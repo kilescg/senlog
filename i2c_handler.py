@@ -1,6 +1,7 @@
 import smbus2
 import time
 import struct
+import pathlib
 from utils import *
 from rich import print
 from rich.pretty import pprint
@@ -13,6 +14,24 @@ model_require_data_dict = {
 model_name_dict = {
     '2': 'Panasonic SN-GCJA5',
     '3': 'Sensirion SCD4x'
+}
+
+model_filename_dict = {
+    '2': 'pana_log.xlsx',
+    '3': 'ss_log.xlsx'
+}
+
+chart_config_dict = {
+    '2': {
+        'title': 'Panasonic SN-GCJA5 Test Sample',
+        'x_axis': 'Test number',
+        'y_axis': 'PM 2.5 (µg/m³)'
+    },
+    '3': {
+        'title': 'Sensirion SCD40 Test Sample',
+        'x_axis': 'Test number',
+        'y_axis': 'CO2 (ppm)'
+    }
 }
 
 class I2C_Trinity:
@@ -52,6 +71,7 @@ class I2C_Trinity:
     
     def start_test(self, round, interval):
         devices = {}
+        timestamp = []
         addresses = self.scan()
 
         '''
@@ -62,7 +82,7 @@ class I2C_Trinity:
             model_id = str(model_id)
             if address not in devices:
                 devices[address] = {}
-                devices[address]['log'] = []
+                devices[address]['data'] = []
             devices[address]['model_id'] = model_id
 
         for cnt in range(round):
@@ -70,6 +90,7 @@ class I2C_Trinity:
             print(f"[bold cyan] Round [/bold cyan] : [green]{cnt}[/green]")
             print(f'[green]{get_human_datetime()}[/green]')
             print()
+            timestamp.append(get_datetime())
             for address in addresses:
                 try:
                     start_time = time.time()
@@ -78,10 +99,7 @@ class I2C_Trinity:
                     model_id = str(model_id)
                     
                     targeted_data = packet_data[model_require_data_dict[model_id]]
-                    devices[address]['log'].append({
-                        'data' : targeted_data,
-                        'datetime' : get_datetime()
-                    })
+                    devices[address]['data'].append(targeted_data)
                     print(f'[bold magenta]Address [/bold magenta] : [orchid]{address}[orchid], [bold light_coral]Type[/bold light_coral] : [salmon1]{model_name_dict[model_id]}[/salmon1], [bold cyan]Data[/bold cyan] : [blue]{targeted_data}[blue]')
                     # devices['datetime'].append(get_datetime())
                 except Exception as error:
@@ -94,6 +112,11 @@ class I2C_Trinity:
             if (cnt == (round-1)):
                 break
 
-        # pprint(devices)
-        # while(1):
-        #     pass
+        sensors_group = format_data_to_excel(devices, timestamp)
+        
+        for model_id in sensors_group.keys():
+            file_name =  os.path.join(pathlib.Path(__file__).parent.resolve(),'excel',model_filename_dict[model_id])
+            print(file_name)
+            create_excel(file_name,sensors_group[model_id],round, chart_config_dict[model_id])
+
+
