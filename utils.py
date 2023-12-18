@@ -7,6 +7,7 @@ from openpyxl.chart import (
     LineChart,
     Reference,
 )
+from rich.pretty import pprint
 
 def number_to_letters(number):
     if number <= 0:
@@ -61,7 +62,7 @@ def create_excel(file_path, data_dict, total_round, chart_config):
         for data_num in range(data_point):
             series = Reference(
                 worksheet,
-                min_col=(chart_num * 10) + data_num + 2,
+                min_col=(chart_num * 10) + data_num + 3,
                 min_row=1,
                 max_row=total_round + 1,
             )
@@ -91,5 +92,5 @@ def format_data_to_excel(data_dict, timestamp):
         if 'timestamp' not in sensors_group[model_id]:
             sensors_group[model_id]['timestamp'] = timestamp
         sensors_group[model_id][address] = data_dict[address]['data']
-
+        sensors_group[model_id] = dict(sorted(sensors_group[model_id].items()))
     return sensors_group

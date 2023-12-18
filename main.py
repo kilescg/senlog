@@ -5,6 +5,7 @@ import json
 from i2c_handler import I2C_Trinity
 from rich.console import Console
 from rich import print
+from subprocess import check_output
 
 
 i2c = I2C_Trinity(1)
@@ -83,6 +84,12 @@ class MainMenu:
         self.start()
 
     def how_to(self):
+        try:
+            ip_address = check_output(['hostname', '-I']).decode("utf-8").split()[0]
+        except:
+            ip_address = '192.168.0.244'
+            print("[red] couldn't get a proper ip address.[/red]")
+        
         os.system('clear')
         print('[green bold]Command[/green bold] : scp <remote_username>@<IPorHost>:<PathToFile> <LocalFileLocation>')
 
@@ -90,8 +97,8 @@ class MainMenu:
               enter [italic green]ifconfig[/italic green] to check rpi ip (wlan0 inet)
               ''')
 
-        print('[green cyan]sensirion eg.[/green cyan] scp trinity@192.168.0.244:/home/trinity/senlog/excel/ss_log.xlsx C:\\Users')
-        print('[green yellow]panasonic eg.[/green yellow] scp trinity@192.168.0.244:/home/trinity/senlog/excel/pana_log.xlsx C:\\Users')
+        print(f'[green cyan]sensirion eg.[/green cyan] scp trinity@{ip_address}:/home/trinity/senlog/excel/ss_log.xlsx C:\\Users')
+        print(f'[green yellow]panasonic eg.[/green yellow] scp trinity@{ip_address}:/home/trinity/senlog/excel/pana_log.xlsx C:\\Users')
 
         print('''
               Press [italic bold green]Enter[/italic bold green] to go to main menu
