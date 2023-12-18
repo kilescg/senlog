@@ -70,14 +70,14 @@ class MainMenu:
 
     def setup_count(self):
         os.system('clear')
-        print("[cyan]Enter the interval (in seconds) between each sensor data:[/cyan]")
+        print("[cyan]Enter the quantity of data points: [/cyan]")
         self.count = self.get_user_choice(is_having_boundary=False)
         self.save_config("count", self.count)
         self.start()
 
     def setup_interval(self):
         os.system('clear')
-        print("[cyan]Enter the quantity of data points: [/cyan]")
+        print("[cyan]Enter the interval (in seconds) between each sensor data:[/cyan]")
         self.interval = self.get_user_choice(is_having_boundary=False)
         self.save_config("interval", self.interval)
         self.start()

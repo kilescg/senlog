@@ -108,9 +108,9 @@ class I2C_Trinity:
 
                 time.sleep(0.1)
         
-        while (time.time() - start_time < interval):
-            if (cnt == (round-1)):
-                break
+            while (time.time() - start_time < interval):
+                if (cnt == (round-1)):
+                    break
 
         sensors_group = format_data_to_excel(devices, timestamp)
         
