@@ -18,8 +18,8 @@ class MainMenu:
 
     def start(self):
         while(1):
-            options_name = ["start_test", "setup_count", "setup_interval", "exit_program", "how_to_export_excel"]
-            options_function = [self.start_test, self.setup_count, self.setup_interval, self.exit_program, self.how_to]
+            options_name = ["start_test", "setup_count", "setup_interval", "how_to_export_excel", "exit_program"]
+            options_function = [self.start_test, self.setup_count, self.setup_interval, self.how_to, self.exit_program]
 
             os.system('clear')
             print(f"""  [bold green]Current Config[/bold green]
@@ -49,7 +49,7 @@ class MainMenu:
                 else:
                     print("[bold red]Invalid choice.[/bold red]")
             except ValueError:
-                print("Invalid input. Please enter a valid number.")
+                print("[red] Invalid input. Please enter a valid number. [/red]")
 
     def load_config(self):
         f = open(self.config_path)

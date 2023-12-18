@@ -96,7 +96,7 @@ class I2C_Trinity:
         # Print the organized information
         for model_id, model_addresses in addresses_by_model.items():
             addresses_str = ', '.join(map(str, model_addresses))
-            print(f"Model ID {model_id} has addresses: {addresses_str}")
+            print(f"[green]{model_name_dict[model_id]}[/green] has addresses: [purple]{addresses_str}[purple]")
 
         for cnt in range(round):
             print()

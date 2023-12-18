@@ -81,16 +81,15 @@ def format_data_to_excel(data_dict, timestamp):
         if model_id not in model_ids:
             model_ids.append(model_id)
     # Create dict from each model id
-    
+
     sensors_group = {}
     for model_id in model_ids:
         sensors_group[model_id] = {}
+        sensors_group[model_id]['timestamp'] = timestamp
+        
 
     for address in data_dict.keys():
         model_id = data_dict[address]["model_id"]
         sensors_group[model_id][address] = data_dict[address]['data']
-        if 'timestamp' not in sensors_group[model_id]:
-            sensors_group[model_id]['timestamp'] = timestamp
-        sensors_group[model_id][address] = data_dict[address]['data']
-        sensors_group[model_id] = dict(sorted(sensors_group[model_id].items()))
+
     return sensors_group
