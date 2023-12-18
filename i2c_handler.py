@@ -84,6 +84,19 @@ class I2C_Trinity:
                 devices[address] = {}
                 devices[address]['data'] = []
             devices[address]['model_id'] = model_id
+            
+        # Organize addresses by model IDs
+        addresses_by_model = {}
+        for address, device_info in devices.items():
+            model_id = device_info['model_id']
+            if model_id not in addresses_by_model:
+                addresses_by_model[model_id] = []
+            addresses_by_model[model_id].append(address)
+
+        # Print the organized information
+        for model_id, model_addresses in addresses_by_model.items():
+            addresses_str = ', '.join(map(str, model_addresses))
+            print(f"Model ID {model_id} has addresses: {addresses_str}")
 
         for cnt in range(round):
             print()
