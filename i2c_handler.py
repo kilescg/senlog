@@ -129,7 +129,6 @@ class I2C_Trinity:
         
         for model_id in sensors_group.keys():
             file_name =  os.path.join(pathlib.Path(__file__).parent.resolve(),'excel',model_filename_dict[model_id])
-            print(file_name)
             create_excel(file_name,sensors_group[model_id],round, chart_config_dict[model_id])
 
 
