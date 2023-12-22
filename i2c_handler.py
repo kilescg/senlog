@@ -73,7 +73,7 @@ class I2C_Trinity:
         devices = {}
         timestamp = []
         addresses = self.scan()
-
+        print(f'we found {addresses}')
         '''
         Classifiy Sensor Type
         '''
@@ -104,10 +104,9 @@ class I2C_Trinity:
             print(f'[green]{get_human_datetime()}[/green]')
             print()
             timestamp.append(get_datetime())
+            start_time = time.time()
             for address in addresses:
                 try:
-                    start_time = time.time()
-
                     _, model_id, _, packet_data = self.read_sensor(address)
                     model_id = str(model_id)
                     
@@ -116,6 +115,7 @@ class I2C_Trinity:
                     print(f'[bold magenta]Address [/bold magenta] : [orchid]{address}[orchid], [bold light_coral]Type[/bold light_coral] : [salmon1]{model_name_dict[model_id]}[/salmon1], [bold cyan]Data[/bold cyan] : [blue]{targeted_data}[blue]')
                     # devices['datetime'].append(get_datetime())
                 except Exception as error:
+                    devices[address]['data'].append(0)
                     print(f"[red] Can't read data on address [/red] : [bold red]{address}[/bold red]")
                     print("An exception occurred:", error)
 
@@ -130,5 +130,9 @@ class I2C_Trinity:
         for model_id in sensors_group.keys():
             file_name =  os.path.join(pathlib.Path(__file__).parent.resolve(),'excel',model_filename_dict[model_id])
             create_excel(file_name,sensors_group[model_id],round, chart_config_dict[model_id])
+            
+if __name__ == '__main__':
+    i2c_handler = I2C_Trinity(1)
+    print(I2C_Trinity.scan())
 
 
