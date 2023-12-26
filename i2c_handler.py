@@ -65,7 +65,7 @@ class I2C_Trinity:
             [float_data_1, float_data_2, float_data_3],
         )
 
-    def start_test(self, round, interval):
+    def start_test(self, total_round, interval):
         devices = {}
         timestamp = []
         addresses = self.scan()
@@ -100,9 +100,11 @@ class I2C_Trinity:
                 f"[green]{model_name_dict[model_id]}[/green] has addresses: [purple]{addresses_str}[purple]"
             )
 
-        for cnt in range(round):
+        for cnt in range(total_round):
             print()
-            print(f"[bold cyan] Round [/bold cyan] : [green]{cnt}[/green]")
+            print(
+                f"[bold cyan] Round [/bold cyan] : [green]{cnt}/{total_round}[/green]"
+            )
             print(f"[green]{get_human_datetime()}[/green]")
             print()
             timestamp.append(get_datetime())
@@ -128,7 +130,7 @@ class I2C_Trinity:
                 time.sleep(0.1)
 
             while time.time() - start_time < interval:
-                if cnt == (round - 1):
+                if cnt == (total_round - 1):
                     break
 
         sensors_group = format_data_to_excel(devices, timestamp)
@@ -140,7 +142,10 @@ class I2C_Trinity:
                 model_filename_dict[model_id],
             )
             create_excel(
-                file_name, sensors_group[model_id], round, chart_config_dict[model_id]
+                file_name,
+                sensors_group[model_id],
+                total_round,
+                chart_config_dict[model_id],
             )
 
 
