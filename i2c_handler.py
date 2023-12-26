@@ -6,7 +6,7 @@ from utils import *
 from rich import print
 from rich.pretty import pprint
 
-model_require_data_dict = {"2": 2, "3": 1}
+model_require_data_dict = {"2": 1, "3": 0}
 
 model_name_dict = {"2": "Panasonic SN-GCJA5", "3": "Sensirion SCD4x"}
 
