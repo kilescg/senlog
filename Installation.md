@@ -26,6 +26,13 @@ sudo nano ~/.bashrc
 
 # put this in the last line of .bashrc
 source incoming_env/bin/activate
+# then ctrl + s to save
+# ctrl + x to exit
+```
+
+## Refresh our terminal
+```bash
+source ~/.bashrc
 ```
 
 ## 6. Clone our repository to RPI
