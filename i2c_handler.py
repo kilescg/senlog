@@ -78,8 +78,6 @@ class I2C_Trinity:
             model_id = str(model_id)
             if str(model_id) not in model_name_dict.keys():
                 continue
-            if error_status != 1:
-                continue
             if address not in devices:
                 devices[address] = {}
                 devices[address]["data"] = []
